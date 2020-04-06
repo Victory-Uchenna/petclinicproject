@@ -1,0 +1,12 @@
+.terraform
+../.bash_history
+../.bash_logout
+../.bashrc
+../.profile
+../.terraform.d/checkpoint_cache
+../.terraform.d/checkpoint_signature
+../.viminfo
+../.wget-hsts
+.main.tf.swo
+terraform.tfstate
+terraform.tfstate.backup
