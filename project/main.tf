@@ -1,14 +1,16 @@
 provider "google" {
-  project = "pure-fold-266009"
-  region = "europe-west2"
+  credentials = file("account.json")
+  project = var.project
+  region  = "europe-west2"
 }
 
-resource "google_container_cluster" "primary" {
-  name     = "petclinic"
-  location = "europe-west2"
+resource "google_container_cluster" "default" {
+  name     = var.name
+  project  = var.project
+  location = var.location
 
   remove_default_node_pool = true
-  initial_node_count       = 3
+  initial_node_count       = var.initial_node_count
 
   master_auth {
     username = ""
@@ -20,15 +22,15 @@ resource "google_container_cluster" "primary" {
   }
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name       = "my-node-pool"
-  location   = "us-central1"
-  cluster    = google_container_cluster.primary.name
+resource "google_container_node_pool" "default" {
+  name       = "${var.name}-node-pool"
+  location   = var.location
+  cluster    = google_container_cluster.default.name
   node_count = 1
 
   node_config {
     preemptible  = true
-    machine_type = "n1-standard-1"
+    machine_type = var.machine_type
 
     metadata = {
       disable-legacy-endpoints = "true"
@@ -40,3 +42,4 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     ]
   }
 }
+
